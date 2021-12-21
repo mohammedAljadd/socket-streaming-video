@@ -1,6 +1,11 @@
 import socket, cv2, pickle,struct,imutils
 import time
+import sys
 
+if int(sys.argv[1]):
+	fps = int(sys.argv[1])
+else:
+	fps = 32
 last_time = time.time()
 # Socket Create
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -32,7 +37,7 @@ while True:
 			frame = imutils.resize(frame,width=320)
 			a = pickle.dumps(frame)
 			message = struct.pack("Q",len(a))+a
-			if time.time() > last_time + how_much_fps(1):
+			if time.time() > last_time + how_much_fps(fps):
 				client_socket.sendall(message)
 				last_time = time.time()
 			
