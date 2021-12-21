@@ -14,6 +14,7 @@ payload_size = struct.calcsize("Q")
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
+fps = 0
 
 while True:
 	while len(data) < payload_size:
@@ -29,11 +30,14 @@ while True:
 	frame_data = data[:msg_size]
 	data  = data[msg_size:]
 	frame = pickle.loads(frame_data)
+	fps += 1
 	if time.time() > last_time+1:
 
 		result = DeepFace.analyze(frame, actions = ['emotion'])
 		result = result['dominant_emotion']
 		last_time = time.time()
+		print(f"Fps : {fps}")
+		fps = 0
 	
 	cv2.putText(frame,
 						result,
