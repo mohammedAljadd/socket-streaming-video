@@ -1,5 +1,7 @@
 import socket, cv2, pickle,struct,imutils
-from deepface import DeepFace
+import time
+
+last_time = time.time()
 # Socket Create
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 host_name  = socket.gethostname()
@@ -15,6 +17,9 @@ server_socket.bind(socket_address)
 server_socket.listen(5)
 print("LISTENING AT:",socket_address)
 
+def how_much_fps(n):
+	return 1/n
+
 # Socket Accept
 while True:
 	client_socket,addr = server_socket.accept()
@@ -27,7 +32,9 @@ while True:
 			frame = imutils.resize(frame,width=320)
 			a = pickle.dumps(frame)
 			message = struct.pack("Q",len(a))+a
-			client_socket.sendall(message)
+			if time.time() > last_time + how_much_fps(1):
+				client_socket.sendall(message)
+				last_time = time.time()
 			
 			cv2.imshow('TRANSMITTING VIDEO',frame)
 			key = cv2.waitKey(1) & 0xFF

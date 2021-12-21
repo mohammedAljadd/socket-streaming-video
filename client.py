@@ -31,6 +31,7 @@ while True:
 	data  = data[msg_size:]
 	frame = pickle.loads(frame_data)
 	fps += 1
+	
 	if time.time() > last_time+1:
 
 		result = DeepFace.analyze(frame, actions = ['emotion'])
