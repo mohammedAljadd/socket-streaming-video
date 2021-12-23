@@ -1,4 +1,4 @@
-# websocket-streaming-video
+# socket-streaming-video
 
 
 	Streaming video using python sockets from server to client with controlled
